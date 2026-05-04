@@ -74,6 +74,33 @@ so a valid binding signature proves balance.
 def valueCommitNet (v_net rcv_net : Pasta.Fq) : Pallas.toAffine.Point :=
   valueCommit v_net rcv_net
 
+/-! ## Note commitment
+
+The note commitment binds the note's fields using a Sinsemilla-based
+hash, blinded with randomness `rcm`. This creates a hiding and binding
+commitment to the note's contents.
+
+See §5.4.8.4 of the Zcash protocol specification.
+-/
+
+/-- An Orchard note containing the fields committed in the note commitment. -/
+structure Note where
+  g_d : Pallas.toAffine.Point
+  pk_d : Pallas.toAffine.Point
+  v : Pasta.Fq
+  rho : Pasta.Fp
+  psi : Pasta.Fp
+
+/-- Note commitment randomness generator (independent of other generators). -/
+axiom NoteCommitR : Pallas.toAffine.Point
+
+/-- Inner hash for note commitment (Sinsemilla in the protocol). -/
+axiom noteCommitHash : Note → Pallas.toAffine.Point
+
+/-- Note commitment: `cm = NoteCommitHash(note) + [rcm] NoteCommitR`. -/
+def noteCommit (note : Note) (rcm : Pasta.Fq) : Pallas.toAffine.Point :=
+  noteCommitHash note + rcm ⬝ NoteCommitR
+
 end
 
 end Orchard
