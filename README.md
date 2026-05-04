@@ -1,6 +1,6 @@
 # orchard-formal
 
-Lean 4 formalization of the [Zcash Orchard](https://zcash.github.io/orchard/) protocol, composing cryptographic primitives from [poseidon-formal](https://github.com/oxarbitrage/poseidon-formal), [redpallas-formal](https://github.com/oxarbitrage/redpallas-formal), and [sinsemilla-formal](https://github.com/oxarbitrage/sinsemilla-formal).
+Lean 4 formalization of the [Zcash Orchard](https://zips.z.cash/protocol/protocol.pdf#orchardpaymentaddresses) protocol, composing cryptographic primitives from [poseidon-formal](https://github.com/oxarbitrage/poseidon-formal), [redpallas-formal](https://github.com/oxarbitrage/redpallas-formal), and [sinsemilla-formal](https://github.com/oxarbitrage/sinsemilla-formal).
 
 **Status: fully proven — zero `sorry`.**
 
@@ -59,24 +59,26 @@ The formalization captures the algebraic core of Orchard's privacy and integrity
 6. **Merkle tree security** (axiom + proven): collision resistance of the Merkle hash implies root determines the tree structure. Path verification is deterministic and yields a unique root.
 7. **Action circuit composition** (proven): the action satisfaction predicate ties together value commitment, nullifier derivation, and Merkle membership. Soundness and double-spend prevention follow from the component properties.
 
-See §4.16, §5.4.5.3, §4.1.7, and §5.4.8.3 of the [Zcash protocol specification](https://zips.z.cash/protocol/protocol.pdf).
+See [§4.16](https://zips.z.cash/protocol/protocol.pdf#nullifierset), [§5.4.5.3](https://zips.z.cash/protocol/protocol.pdf#concreteorchardkeyagreement), [§4.1.7](https://zips.z.cash/protocol/protocol.pdf#orchardmerkletree), and [§5.4.8.3](https://zips.z.cash/protocol/protocol.pdf#concretevaluecommit) of the Zcash protocol specification.
 
 ## Axioms
 
-Generator points and the challenge hash are axiomatized (opaque data/functions):
+Generator points and hash functions are axiomatized as opaque data/functions. No mathematical claims are axiomatized beyond standard collision resistance — all security properties are proven from the algebraic structure.
 
-- `ValueBaseV` — value commitment generator
+**Orchard axioms (this library):**
+
+- `ValueBaseV` — value commitment generator (hash-to-curve output)
 - `K` — nullifier deriving key base point
-- `BindingG`, `G` — from RedPallas (binding and spend auth generators)
-- `challengeHash` — from RedPallas (BLAKE2b-based hash)
-- `roundConstants` — from Poseidon (Grain LFSR output)
 - `NoteCommitR` — note commitment randomness generator
 - `noteCommitHash` — inner hash for note commitment (Sinsemilla)
 - `commitToLeaf` — note commitment to Merkle leaf conversion
 - `merkleHash` — Merkle CRH (Sinsemilla in the protocol)
 - `merkleHash_collision_resistant` — collision resistance of the Merkle hash
 
-No mathematical claims are axiomatized beyond standard collision resistance — all security properties are proven from the algebraic structure.
+**From dependencies:**
+
+- `G`, `BindingG`, `challengeHash` — from [redpallas-formal](https://github.com/oxarbitrage/redpallas-formal) (signature generators and challenge hash)
+- `order_pallas` — from [redpallas-formal](https://github.com/oxarbitrage/redpallas-formal) (Pallas group order)
 
 ## Building
 
@@ -98,6 +100,12 @@ lake build     # builds in ~10 seconds after cache download
 
 ## References
 
-- [Zcash protocol specification, §4.16, §5.4.8.3](https://zips.z.cash/protocol/protocol.pdf) — Nullifier derivation, value commitments
+- [Zcash Protocol Specification §4.16](https://zips.z.cash/protocol/protocol.pdf#nullifierset) — Nullifier derivation
+- [Zcash Protocol Specification §5.4.8.3](https://zips.z.cash/protocol/protocol.pdf#concretevaluecommit) — Value commitments
+- [Zcash Protocol Specification §4.17.4](https://zips.z.cash/protocol/protocol.pdf#orchardactionstatement) — Action circuit
 - [zcash/orchard](https://github.com/zcash/orchard) — Rust implementation
 - [pasta-formal](https://github.com/oxarbitrage/pasta-formal) — Pallas/Vesta Lean 4 formalization
+
+## License
+
+MIT
