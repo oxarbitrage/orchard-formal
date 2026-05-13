@@ -57,6 +57,15 @@ theorem paymentAddress_pk_d (ivk : IncomingViewingKey)
 /-- The diversified public key `pk_d` of a `paymentAddress` constructed from a
     `SpendingKey`'s derived IVK equals the public key obtained by deriving the
     public key from `sk.rivk`.
+
+    **First-pass simplification caveat:** This theorem holds because the current
+    model sets `IVK = rivk` directly, bypassing the full Orchard PRF-based IVK
+    derivation (`IVK = PRF^{ivk}(ak, nk)` from the protocol spec §4.2.3).  The
+    result equates two derivation paths — the chain
+    `sk → deriveFullViewingKey → deriveIncomingViewingKey` versus the shortcut
+    `sk.rivk` — only because those paths coincide under this simplification.
+    Once a PRF-faithful IVK model is introduced the theorem statement will need
+    to be updated.
 -/
 theorem paymentAddress_pk_d_from_spendingKey (sk : SpendingKey)
     (g_d : Pallas.toAffine.Point) :
@@ -70,6 +79,12 @@ theorem paymentAddress_pk_d_from_spendingKey (sk : SpendingKey)
     This shows that key agreement using an ephemeral secret `esk` yields the same
     result whether using the `paymentAddress`'s `pk_d` or the `derivePublicKey`
     constructed from the spending key's `rivk`.
+
+    **First-pass simplification caveat:** Like `paymentAddress_pk_d_from_spendingKey`,
+    this theorem relies on the model-level equality `IVK = rivk` rather than the
+    full Orchard PRF-based IVK derivation.  The agreement holds trivially because
+    both sides reduce to the same `sk.rivk`-derived key under this simplification;
+    it is not yet a proof of the full protocol's DH-agreement property.
 -/
 theorem paymentAddress_keyAgreement (sk : SpendingKey)
     (esk : Pasta.Fq) (g_d : Pallas.toAffine.Point) :
