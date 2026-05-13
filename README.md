@@ -15,7 +15,7 @@ Lean 4 formalization of Zcash's Orchard shielded protocol, composing Poseidon, S
 - **`node_root_injective`** — under collision resistance, equal Merkle roots imply equal subtrees.
 - **`action_no_double_spend`** — satisfied action circuits cannot double-spend.
 
-~40 theorems total across value commitments, nullifiers, note commitments, DH key agreement, viewing keys, payment addresses, Merkle paths, and action circuit soundness.
+48 theorems total across value commitments, nullifiers, note commitments, DH key agreement, viewing keys, payment addresses, Merkle paths, and action circuit soundness.
 
 ## Axioms
 
