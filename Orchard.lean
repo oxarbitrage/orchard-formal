@@ -3,3 +3,6 @@ import Orchard.Properties
 import Orchard.KeyAgreement
 import Orchard.MerklePath
 import Orchard.ActionCircuit
+import Orchard.ViewingKeys
+import Orchard.Addresses
+import Orchard.ViewingKeysProperties
