@@ -95,6 +95,11 @@ theorem paymentAddress_keyAgreement (sk : SpendingKey)
 
 /-- A `paymentAddress` constructed from a valid diversifier is well-formed.
 
+    This theorem is a thin re-export (theorem-layer alias) of
+    `paymentAddress_valid` defined in `Orchard.Addresses`. It is provided here as a
+    renamed/relocated well-formedness lemma for the theorem layer and simply
+    forwards to `paymentAddress_valid`.
+
     The `IsValid` predicate for `PaymentAddress` is satisfied when the diversifier
     `g_d` meets the `ValidDiversifier` condition.
 -/
