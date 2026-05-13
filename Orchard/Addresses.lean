@@ -17,12 +17,12 @@ open Pasta RedPallas
 
 noncomputable section
 
-/-- A predicate indicating that a point g_d is a valid diversifier.
+/-- A predicate indicating that a point `g_d` is a valid diversifier.
 
-This represents the deferred diversifier-validity / hash-to-group condition
-from the Zcash spec: a diversifier must map to a group element satisfying
-the protocol's validity checks. The concrete construction is modelled as an
-axiom here and instantiated/refined later.
+    This represents the deferred diversifier-validity / hash-to-group condition
+    from the Zcash spec: a diversifier must map to a group element satisfying
+    the protocol's validity checks. The concrete construction is modelled as an
+    axiom here and instantiated/refined later.
 -/
 axiom ValidDiversifier : Pallas.toAffine.Point → Prop
 
@@ -60,8 +60,7 @@ def paymentAddress (ivk : IncomingViewingKey)
   { g_d := g_d
     pk_d := deriveTransmissionKey ivk g_d }
 
-/-- If the diversifier `g_d` is valid then the constructed `paymentAddress` is valid.
--/
+/-- If the diversifier `g_d` is valid then the constructed `paymentAddress` is valid. -/
 theorem paymentAddress_valid (ivk : IncomingViewingKey)
     (g_d : Pallas.toAffine.Point) (h : ValidDiversifier g_d) :
     (paymentAddress ivk g_d).IsValid := by
@@ -74,10 +73,12 @@ example (ivk : IncomingViewingKey) (g_d : Pallas.toAffine.Point) :
     (paymentAddress ivk g_d).pk_d = deriveTransmissionKey ivk g_d := by
   rfl
 
+-- Inline regression test: validity propagation from diversifier to address.
 example (ivk : IncomingViewingKey) (g_d : Pallas.toAffine.Point)
     (h : ValidDiversifier g_d) :
     (paymentAddress ivk g_d).IsValid := by
   exact paymentAddress_valid ivk g_d h
+
 
 end
 
