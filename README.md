@@ -11,10 +11,11 @@ Lean 4 formalization of Zcash's Orchard shielded protocol, composing Poseidon, S
 - **`nullifier_uniqueness`** — distinct notes produce distinct nullifiers: the formal proof of double-spend prevention.
 - **`balance_multi_binding`** — a balanced multi-action transaction produces a verifiable binding key [Σ rcvᵢ]·BindingG.
 - **`dh_shared_secret`** — sender and recipient derive identical shared secrets: [esk]·pk_d = [ivk]·epk.
+- **`paymentAddress_pk_d_from_spendingKey`** — addresses derived from a spending key use the same transmission key as the incoming viewing-key path.
 - **`node_root_injective`** — under collision resistance, equal Merkle roots imply equal subtrees.
 - **`action_no_double_spend`** — satisfied action circuits cannot double-spend.
 
-~35 theorems total across value commitments, nullifiers, note commitments, DH key agreement, Merkle paths, and action circuit soundness.
+~40 theorems total across value commitments, nullifiers, note commitments, DH key agreement, viewing keys, payment addresses, Merkle paths, and action circuit soundness.
 
 ## Axioms
 
