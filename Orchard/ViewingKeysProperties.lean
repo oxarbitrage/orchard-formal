@@ -27,23 +27,28 @@ theorem deriveFullViewingKey_ak (sk : SpendingKey) :
     (deriveFullViewingKey sk).ak = keygen sk.ask := by
   rfl
 
+/-- The nullifier key component `nk` of a `FullViewingKey` derived from a `SpendingKey`. -/
 theorem deriveFullViewingKey_nk (sk : SpendingKey) :
     (deriveFullViewingKey sk).nk = sk.nk := by
   rfl
 
+/-- The incoming viewing key `ivk` obtained from deriving a `FullViewingKey` equals the spending key's `rivk`. -/
 theorem deriveIncomingViewingKey_rivk (sk : SpendingKey) :
     (deriveIncomingViewingKey (deriveFullViewingKey sk)).ivk = sk.rivk := by
   rfl
 
+/-- The outgoing viewing key `ovk` component of a `FullViewingKey` derived from a `SpendingKey`. -/
 theorem deriveOutgoingViewingKey_ovk (sk : SpendingKey) :
     (deriveOutgoingViewingKey (deriveFullViewingKey sk)).ovk = sk.ovk := by
   rfl
 
+/-- The diversified group element `g_d` of a `paymentAddress` equals the `g_d` used to construct it. -/
 theorem paymentAddress_g_d (ivk : IncomingViewingKey)
     (g_d : Pallas.toAffine.Point) :
     (paymentAddress ivk g_d).g_d = g_d := by
   rfl
 
+/-- The diversified public key `pk_d` of a `paymentAddress` is the transmission key derived from the `ivk` and `g_d`. -/
 theorem paymentAddress_pk_d (ivk : IncomingViewingKey)
     (g_d : Pallas.toAffine.Point) :
     (paymentAddress ivk g_d).pk_d = deriveTransmissionKey ivk g_d := by
@@ -83,20 +88,6 @@ theorem paymentAddress_wellFormed (ivk : IncomingViewingKey)
     (paymentAddress ivk g_d).IsValid := by
   exact paymentAddress_valid ivk g_d h
 
-example (sk : SpendingKey) :
-    (deriveFullViewingKey sk).ak = keygen sk.ask := by
-  exact deriveFullViewingKey_ak sk
-
-example (sk : SpendingKey) (g_d : Pallas.toAffine.Point) :
-    (paymentAddress (deriveIncomingViewingKey (deriveFullViewingKey sk)) g_d).pk_d =
-      derivePublicKey sk.rivk g_d := by
-  exact paymentAddress_pk_d_from_spendingKey sk g_d
-
-example (sk : SpendingKey) (esk : Pasta.Fq) (g_d : Pallas.toAffine.Point) :
-    keyAgreement esk
-        (paymentAddress (deriveIncomingViewingKey (deriveFullViewingKey sk)) g_d).pk_d =
-      keyAgreement esk (derivePublicKey sk.rivk g_d) := by
-  exact paymentAddress_keyAgreement sk esk g_d
 
 end
 
