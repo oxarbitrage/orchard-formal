@@ -1,5 +1,4 @@
 import Orchard.KeyAgreement
-import RedPallas.Properties
 
 namespace Orchard
 
