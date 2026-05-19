@@ -29,12 +29,12 @@ def senderAddress (sender : SenderNoteEncryption) : PaymentAddress :=
 
 /-- The sender's ephemeral public key `epk = [esk] g_d`. -/
 def senderEphemeralKey (sender : SenderNoteEncryption) : Pallas.toAffine.Point :=
-  ephemeralKey sender.esk sender.addr.g_d
+  ephemeralKey sender.esk (senderAddress sender).g_d
 
 /-- The sender-side shared secret derived from the address's diversified public
     key. -/
 def senderSharedSecret (sender : SenderNoteEncryption) : Pallas.toAffine.Point :=
-  keyAgreement sender.esk sender.addr.pk_d
+  keyAgreement sender.esk (senderAddress sender).pk_d
 
 /-- Opaque encryption interface, parameterized by the shared secret and
     plaintext payload. -/
@@ -50,8 +50,10 @@ def encryptNote (sender : SenderNoteEncryption) : TransmittedNote :=
   { epk := senderEphemeralKey sender
     ciphertext := encrypt (senderSharedSecret sender) sender.plaintext }
 
-/-- Sender-side well-formedness: the diversifier is valid and the plaintext is
-    aligned with the targeted payment address. -/
+/-- Sender-side well-formedness: this predicate only checks sender-local inputs
+    (valid diversifier and plaintext/address alignment). It does **not** assert
+    that `addr.pk_d` is compatible with any incoming viewing key; that
+    cross-party compatibility is supplied separately in the theorem layer. -/
 def SenderNoteEncryption.WellFormed (sender : SenderNoteEncryption) : Prop :=
   sender.addr.IsValid ∧
   sender.plaintext.matchesAddress (senderAddress sender)
