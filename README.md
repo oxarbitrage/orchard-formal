@@ -12,10 +12,11 @@ Lean 4 formalization of Zcash's Orchard shielded protocol, composing Poseidon, S
 - **`balance_multi_binding`** — a balanced multi-action transaction produces a verifiable binding key [Σ rcvᵢ]·BindingG.
 - **`dh_shared_secret`** — sender and recipient derive identical shared secrets: [esk]·pk_d = [ivk]·epk.
 - **`paymentAddress_pk_d_from_spendingKey`** — the `pk_d` in a payment address matches whether derived via the full `sk → FVK → IVK` chain or directly from `sk.rivk` (relies on the first-pass simplification `IVK = rivk`).
+- **`decrypt_encryptNote`** — under the explicit ciphertext-correctness boundary, decrypting a note encrypted for the matching incoming viewing path recovers the original plaintext.
 - **`node_root_injective`** — under collision resistance, equal Merkle roots imply equal subtrees.
 - **`action_no_double_spend`** — satisfied action circuits cannot double-spend.
 
-48 named theorems and lemmas across value commitments, nullifiers, note commitments, DH key agreement, viewing keys, payment addresses, Merkle paths, and action circuit soundness (the count includes a small number of theorem-layer aliases / re-exports).
+52 named theorems and lemmas across value commitments, nullifiers, note commitments, DH key agreement, viewing keys, payment addresses, note encryption/decryption correctness, Merkle paths, and action circuit soundness (the count includes a small number of theorem-layer aliases / re-exports).
 
 ## Axioms
 
@@ -23,6 +24,7 @@ Lean 4 formalization of Zcash's Orchard shielded protocol, composing Poseidon, S
 |-------|--------------|
 | `ValueBaseV`, `K`, `NoteCommitR` | Certified Zcash generators |
 | `noteCommitHash` | Sinsemilla-based hash, axiomatized as opaque |
+| `Ciphertext`, `encrypt`, `decrypt`, `decrypt_encrypt_roundtrip` | First-pass abstract ciphertext interface and round-trip correctness boundary |
 | `merkleHash_collision_resistant` | Standard collision-resistance assumption |
 | `commitToLeaf` | Leaf hash function, axiomatized as opaque |
 

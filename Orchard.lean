@@ -6,3 +6,7 @@ import Orchard.ActionCircuit
 import Orchard.ViewingKeys
 import Orchard.Addresses
 import Orchard.ViewingKeysProperties
+import Orchard.NotePlaintext
+import Orchard.NoteEncryption
+import Orchard.NoteDecryption
+import Orchard.NoteEncryptionProperties
