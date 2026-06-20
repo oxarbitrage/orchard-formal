@@ -15,6 +15,7 @@ Lean 4 formalization of Zcash's Orchard shielded protocol, composing Poseidon, S
 - **`decrypt_encryptNote`** — under the explicit ciphertext-correctness boundary, decrypting a note encrypted for the matching incoming viewing path recovers the original plaintext.
 - **`node_root_injective`** — under collision resistance, equal Merkle roots imply equal subtrees.
 - **`action_no_double_spend`** — satisfied action circuits cannot double-spend.
+- **`bundle_balances`** — end-to-end balance proof: from binding signature extractability and DLR hardness, a valid bundle with bounded values cannot create or destroy ZEC.
 
 52 named theorems and lemmas across value commitments, nullifiers, note commitments, DH key agreement, viewing keys, payment addresses, note encryption/decryption correctness, Merkle paths, and action circuit soundness (the count includes a small number of theorem-layer aliases / re-exports).
 

@@ -10,3 +10,4 @@ import Orchard.NotePlaintext
 import Orchard.NoteEncryption
 import Orchard.NoteDecryption
 import Orchard.NoteEncryptionProperties
+import Orchard.Balance
